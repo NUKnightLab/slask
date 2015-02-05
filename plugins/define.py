@@ -18,7 +18,7 @@ def define(text):
     definitions = wordApi.getDefinitions(text)
     lines = []
     for d in definitions:
-        lines.append('*{}* _({})_: {}'.format(d.word, d.partOfSpeech, d.text))
+        lines.append(u'*{}* _({})_: {}'.format(d.word, d.partOfSpeech, d.text))
     return '\n'.join(lines)
 
 def on_message(msg, server):
