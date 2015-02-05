@@ -3,7 +3,7 @@ import os
 
 config = {
     # Your slask API token
-    "token": os.environ['SLACK_LEELOU_KEY'],
+    "token": os.environ.get('SLACK_LEELOU_KEY'),
 
     # The log level. Valid options are logging.{DEBUG, INFO, WARNING, ERROR, CRITICAL})
     "loglevel": logging.DEBUG,
