@@ -1,1 +1,1 @@
-worker: python slask.py
+worker: python -u slask.py
