@@ -91,15 +91,17 @@ event_handlers = {
 }
 
 def main(config):
+    logging.debug("Main begins")
     hooks = init_plugins("plugins")
 
     client = SlackClient(config["token"])
     if client.rtm_connect():
+        logging.info("Connected.")
         users = client.server.users
         while True:
             events = client.rtm_read()
             for event in events:
-                #print "got {0}".format(event.get("type", event))
+                logging.debug("got {0}".format(event.get("type", event)))
                 handler = event_handlers.get(event.get("type"))
                 if handler:
                     response = handler(client, event, hooks, config)
