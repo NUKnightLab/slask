@@ -113,6 +113,6 @@ def main(config):
 
 if __name__=="__main__":
     from config import config
-    print "python is running"
+    print("python is running")
     init_log(config)
     main(config)
