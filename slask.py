@@ -97,12 +97,11 @@ def handle_event(client, event, hooks, config):
     return None
 
 def main(config):
-    logging.debug("Main begins")
+    init_log(config)
     hooks = init_plugins("plugins")
 
     client = SlackClient(config["token"])
     if client.rtm_connect():
-        logging.info("Connected.")
         users = client.server.users
         while True:
             events = client.rtm_read()
@@ -115,33 +114,40 @@ def main(config):
     else:
         logging.warn("Connection Failed, invalid token <{0}>?".format(config["token"]))
 
-def test(config, hook, command):
-    from test import FakeClient
-    client = FakeClient()
+def run_cmd(client, cmd, hook):
     hooks = init_plugins("plugins")
-    event = { 'type': hook, 'text': command, "user": "msguser" }
-    response = handle_event(client, event, hooks, config)
-    print(response)
+    event = { 'type': hook, 'text': cmd, "user": "msguser" }
+    return handle_event(client, event, hooks, config)
 
+def repl(config, client, hook):
+    try:
+        while 1:
+            cmd = raw_input("slask> ")
+            if cmd.lower() == "quit" or cmd.lower() == "exit":
+                return
+
+            print(run_cmd(client, cmd, hook))
+    except (EOFError, KeyboardInterrupt):
+        print()
+        pass
 
 if __name__=="__main__":
     from config import config
     import argparse
-    init_log(config)
 
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(description="Run the slask chatbot for Slack")
     parser.add_argument('--test', '-t', dest='test', action='store_true', required=False,
-                   help='Test a command and exit instead of running the server.')
+                        help='Enter command line mode to enter a slask repl')
     parser.add_argument('--hook', dest='hook', action='store', default='message',
-                   help='Specify the hook to test. (Defaults to "message".)')
-    parser.add_argument('command', metavar='N', nargs='*',
-                   help='the text which should be tested')
+                        help='Specify the hook to test. (Defaults to "message")')
+    parser.add_argument('-c', dest="command", help='run a single command')
     args = parser.parse_args()
 
     if args.test:
-        if args.command:
-            test(config, args.hook, ' '.join(args.command))
-        else:
-            print("Nothing to test.")
+        from test import FakeClient
+        repl(config, FakeClient(), args.hook)
+    elif args.command:
+        from test import FakeClient
+        print(run_cmd(FakeClient(), args.command, args.hook))
     else:
         main(config)
