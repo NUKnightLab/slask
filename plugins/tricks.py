@@ -3,25 +3,26 @@
 import re
 from random import choice
 import logging
+# U03J911F1
+TRIGGER = re.compile(r'<@(.+)>\s+(.+)',re.IGNORECASE)
 
-TRIGGER = re.compile(r'^@leelou\s+(.+)',re.IGNORECASE)
-
-def on_message(msg, server):
+def on_message(msg, context):
+    """Context has keys: 'client', 'config', 'hooks'"""
     text = msg.get("text", "")
-    logging.debug(u"Leelou heard '{}'".format(text))
     match = TRIGGER.match(text)
     if not match: return
 
-    command = match.group(1)
+    user_id, command = match.groups()
+    if user_id == 'U03J911F1' or user_id == 'leelou':
+        logging.debug(context['client'].server.users.get(user_id,'no such user id'))
+        for pat, func in PHRASES:
+            if pat.match(command):
+                logging.debug(u"Leelou matched /{}/".format(pat.pattern))
+                return func(command)
+        logging.debug(u"Leelou doesn't know how to {}".format(command))
+        return None
 
-    for pat, func in PHRASES:
-        if pat.match(command):
-            logging.debug(u"Leelou matched /{}/".format(pat.pattern))
-            return func(command)
-    logging.debug(u"Leelou doesn't know how to {}".format(command))
-    return None
-
-def on_presence_change(msg, server):
+def on_presence_change(msg, context):
     if msg.get('presence') == 'active':
         logging.debug(u"Leelou sees {}".format(msg.get('user',"no user?")))
     return None
