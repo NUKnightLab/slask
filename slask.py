@@ -92,8 +92,8 @@ event_handlers = {
 }
 
 def handle_event(client, event, hooks, config):
-    logger.debug(u"Handling event type [{}]".format(event.get('type')))
-    logger.debug(u"Event: {}".format(event))
+    logging.debug(u"Handling event type [{}]".format(event.get('type')))
+    logging.debug(u"Event: {}".format(event))
     handler = event_handlers.get(event.get("type"))
     if handler:
         return handler(client, event, hooks, config)
@@ -109,7 +109,7 @@ def main(config):
         while True:
             events = client.rtm_read()
             for event in events:
-                logger.debug("got {0}".format(event.get("type", event)))
+                logging.debug("got {0}".format(event.get("type", event)))
                 response = handle_event(client, event, hooks, config)
                 if response:
                     client.rtm_send_message(event["channel"], response)
