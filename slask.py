@@ -61,10 +61,10 @@ def init_plugins(plugindir):
 
     return hooks
 
-def run_hook(hooks, hook, data, server):
+def run_hook(hooks, hook, data, context):
     responses = []
     for hook in hooks.get(hook, []):
-        h = hook(data, server)
+        h = hook(data, context)
         if h: responses.append(h)
 
     return responses
@@ -82,7 +82,6 @@ def handle_message(client, event, hooks, config):
         return
 
     if msguser["name"] == botname or msguser["name"].lower() == "slackbot":
-        logging.debug(u"Skip from {name}",**msguser)
         return
 
     return "\n".join(run_hook(hooks, "message", event, {"client": client, "config": config, "hooks": hooks}))
@@ -92,8 +91,6 @@ event_handlers = {
 }
 
 def handle_event(client, event, hooks, config):
-    logging.debug(u"Handling event type [{}]".format(event.get('type')))
-    logging.debug(u"Event: {}".format(event))
     handler = event_handlers.get(event.get("type"))
     if handler:
         return handler(client, event, hooks, config)
