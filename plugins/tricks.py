@@ -3,13 +3,12 @@
 import re
 from random import choice
 import logging
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
+
 TRIGGER = re.compile(r'^@leelou\s+(.+)',re.IGNORECASE)
 
 def on_message(msg, server):
     text = msg.get("text", "")
-    logger.debug(u"Leelou heard '{}'".format(text))
+    logging.debug(u"Leelou heard '{}'".format(text))
     match = TRIGGER.match(text)
     if not match: return
 
@@ -17,14 +16,14 @@ def on_message(msg, server):
 
     for pat, func in PHRASES:
         if pat.match(command):
-            logger.debug(u"Leelou matched /{}/".format(pat.pattern))
+            logging.debug(u"Leelou matched /{}/".format(pat.pattern))
             return func(command)
-    logger.debug(u"Leelou doesn't know how to {}".format(command))
+    logging.debug(u"Leelou doesn't know how to {}".format(command))
     return None
 
 def on_presence_change(msg, server):
     if msg.get('presence') == 'active':
-        logger.debug(u"Leelou sees {}".format(msg.get('user',"no user?")))
+        logging.debug(u"Leelou sees {}".format(msg.get('user',"no user?")))
     return None
 
 ROLL_OVER_GIFS = ['http://stream1.gifsoup.com/view4/2110073/french-bulldog-roll-over-o.gif', 'http://www.beheadingboredom.com/wp-content/uploads/2013/04/cat-teaches-dog-trick.gif', 'http://giphy.com/gifs/dog-puppy-tired-NnafYvjXZK9j2', 'http://giphy.com/gifs/cute-sloth-playing-dead-y5owIXKzlPYA0' ]
