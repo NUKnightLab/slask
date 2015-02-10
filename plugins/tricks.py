@@ -4,7 +4,7 @@ import re
 from random import choice
 import logging
 logger = logging.getLogger(__name__)
-
+logger.setLevel(logging.DEBUG)
 TRIGGER = re.compile(r'^@leelou\s+(.+)',re.IGNORECASE)
 
 def on_message(msg, server):
