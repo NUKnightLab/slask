@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """!define <text> returns the Wordnik definition for the word (or maybe the URL for the wordnik page?)"""
 import os
 import re
@@ -17,8 +18,10 @@ if not WORDNIK_API_KEY:
 def define(text):
     definitions = wordApi.getDefinitions(text)
     lines = []
-    for d in definitions:
+    for d in definitions[:5]:
         lines.append(u'*{}* _({})_: {}'.format(d.word, d.partOfSpeech, d.text))
+    if len(definitions) > 5:
+        lines.append(u"…and {} more".format(len(definitions) - 5))
     return '\n'.join(lines)
 
 def on_message(msg, server):
