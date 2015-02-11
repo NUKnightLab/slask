@@ -14,7 +14,7 @@ def on_message(msg, context):
 
     user_id, command = match.groups()
     user = context['client'].server.users.get(user_id,None)
-    if user['name'] == 'leelou':
+    if user and user['name'] == 'leelou':
         for pat, func in PHRASES:
             if pat.match(command):
                 return func(command)
