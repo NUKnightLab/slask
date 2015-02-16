@@ -1,4 +1,5 @@
 """Reminds you to cool it."""
+import re
 
 def on_message(msg, context):
     """Context has keys: 'client', 'config', 'hooks'"""
@@ -7,5 +8,5 @@ def on_message(msg, context):
     if len(text) <= 5:
         return None
     text = re.sub(r'<@.+?>','',text) # Slack user IDs look like shouting...
-    if text == text.upper():
+    if text.strip() and text == text.upper():
         return "You don't have to shout."
