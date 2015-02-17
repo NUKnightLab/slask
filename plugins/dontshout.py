@@ -8,5 +8,5 @@ def on_message(msg, context):
     if len(text) <= 5:
         return None
     text = re.sub(r'<@.+?>','',text) # Slack user IDs look like shouting...
-    if text.strip() and text == text.upper():
+    if len(text) > 4 and text.isupper():
         return "You don't have to shout."
