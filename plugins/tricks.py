@@ -38,12 +38,19 @@ SHAKE_GIFS = ['http://petapixel.com/assets/uploads/2011/07/dog2.jpg', 'http://pe
 
 PLAY_DEAD_GIFS = [ 'http://giphy.com/gifs/cute-sloth-playing-dead-y5owIXKzlPYA0', 'http://giphy.com/gifs/NaSfr9cS4maLC/html5', 'http://giphy.com/gifs/55HTlUXBKXGWA/html5', 'http://giphy.com/gifs/ZptvPz6BWZM8U/html5'  ]
 
-def chooser(seq):
-    def func(command):
-        return choice(seq)
+def roll_over(command):
+    return choice(ROLL_OVER_GIFS)
+
+def shake(command):
+    return choice(SHAKE_GIFS)
+
+def play_dead(command):
+    return choice(PLAY_DEAD_GIFS)
+
 
 PHRASES = [
-    (re.compile(r'^.*roll over.*$', re.IGNORECASE), chooser(ROLL_OVER_GIFS)),
-    (re.compile(r'^.*shake.*$', re.IGNORECASE), chooser(SHAKE_GIFS)),
-    (re.compile(r'^.*play ded.*$', re.IGNORECASE), chooser(PLAY_DEAD_GIFS)),
+    (re.compile(r'^.*roll over.*$', re.IGNORECASE), roll_over),
+    (re.compile(r'^.*shake.*$', re.IGNORECASE), shake,
+    (re.compile(r'^.*play ded.*$', re.IGNORECASE), play_dead),
 ]    
+
