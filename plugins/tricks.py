@@ -32,19 +32,18 @@ def on_presence_change(msg, context):
 
     return None
 
-ROLL_OVER_GIFS = ['http://stream1.gifsoup.com/view4/2110073/french-bulldog-roll-over-o.gif', 'http://www.beheadingboredom.com/wp-content/uploads/2013/04/cat-teaches-dog-trick.gif', 'http://giphy.com/gifs/dog-puppy-tired-NnafYvjXZK9j2', 'http://giphy.com/gifs/cute-sloth-playing-dead-y5owIXKzlPYA0' ]
+ROLL_OVER_GIFS = ['http://stream1.gifsoup.com/view4/2110073/french-bulldog-roll-over-o.gif', 'http://www.beheadingboredom.com/wp-content/uploads/2013/04/cat-teaches-dog-trick.gif', 'http://giphy.com/gifs/NnafYvjXZK9j2/html5']
 
-SHAKE_GIFS = ['http://petapixel.com/assets/uploads/2011/07/dog2.jpg', 'http://petapixel.com/assets/uploads/2013/10/shake3.jpg', 'http://thumbs.dreamstime.com/x/wet-dog-shaking-6990844.jpg', 'http://pad1.whstatic.com/images/thumb/c/c4/Teach-Your-Dog-to-Shake-Hands-Step-3.jpg/670px-Teach-Your-Dog-to-Shake-Hands-Step-3.jpg', 'http://petsitterpatrol.com/wp-content/uploads/2012/04/high-five1-300x213.jpg']
+SHAKE_GIFS = ['http://petapixel.com/assets/uploads/2011/07/dog2.jpg', 'http://petapixel.com/assets/uploads/2013/10/shake3.jpg', 'http://thumbs.dreamstime.com/x/wet-dog-shaking-6990844.jpg', 'http://pad1.whstatic.com/images/thumb/c/c4/Teach-Your-Dog-to-Shake-Hands-Step-3.jpg/670px-Teach-Your-Dog-to-Shake-Hands-Step-3.jpg', 'http://petsitterpatrol.com/wp-content/uploads/2012/04/high-five1-300x213.jpg', 'http://giphy.com/gifs/KW6evDKuJkv4s/html5', 'http://giphy.com/gifs/PWuPMJggRWDCM/html5']
 
-def roll_over(command):
+PLAY_DEAD_GIFS = [ 'http://giphy.com/gifs/cute-sloth-playing-dead-y5owIXKzlPYA0', 'http://giphy.com/gifs/NaSfr9cS4maLC/html5', 'http://giphy.com/gifs/55HTlUXBKXGWA/html5', 'http://giphy.com/gifs/ZptvPz6BWZM8U/html5'  ]
 
-    return choice(ROLL_OVER_GIFS)
-
-def shake(command):
-    return choice(SHAKE_GIFS)
-
+def chooser(seq):
+    def func(command):
+        return choice(seq)
 
 PHRASES = [
-    (re.compile(r'^.*roll over.*$', re.IGNORECASE), roll_over),
-    (re.compile(r'^.*shake.*$', re.IGNORECASE), shake),
+    (re.compile(r'^.*roll over.*$', re.IGNORECASE), chooser(ROLL_OVER_GIFS)),
+    (re.compile(r'^.*shake.*$', re.IGNORECASE), chooser(SHAKE_GIFS)),
+    (re.compile(r'^.*play ded.*$', re.IGNORECASE), chooser(PLAY_DEAD_GIFS)),
 ]    
