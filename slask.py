@@ -106,7 +106,6 @@ def main(config):
         while True:
             events = client.rtm_read()
             for event in events:
-                logging.debug("got {0}".format(event.get("type", event)))
                 response = handle_event(client, event, hooks, config)
                 if response:
                     client.rtm_send_message(event["channel"], response)
