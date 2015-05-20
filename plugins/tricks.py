@@ -52,7 +52,7 @@ def play_dead(command):
 
 PHRASES = [
     (re.compile(r'^.*roll over.*$', re.IGNORECASE), roll_over),
-    (re.compile(r'^.*shake.*$', re.IGNORECASE), shake,
+    (re.compile(r'^.*shake.*$', re.IGNORECASE), shake),
     (re.compile(r'^.*play ded.*$', re.IGNORECASE), play_dead),
 ]    
 
