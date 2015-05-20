@@ -14,6 +14,8 @@ def on_message(msg, context):
 
     user_id, command = match.groups()
     user = context['client'].server.users.get(user_id,None)
+    if user: logging.info('tricks @{}'.format(user['name']))
+    else: logging.warn("tricks doesn't know user id {}".format(user_id))
     if user and user['name'] == 'leelou':
         for pat, func in PHRASES:
             if pat.match(command):
